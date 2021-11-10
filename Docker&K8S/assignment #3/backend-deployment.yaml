@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Myapp
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: Myapp
+        tier: backend
+    spec:
+      containers:
+      - name: nginx-test
+        image: sbm782/testnginx:1.0
+        ports:
+        - containerPort: 80
+      - name: redis
+        image: redis
+        volumeMounts:
+        - name: redis-storage
+          mountPath: /data/redis
+      volumes:
+      - name: redis-storage
+        emptyDir: {} 

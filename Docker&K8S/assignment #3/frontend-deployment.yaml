@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Myapp
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: Myapp
+        tier: frontend
+    spec:
+      containers:
+      - name: d-day-counter
+        image: sbm782/d-day:1.0
+        ports:
+        - containerPort: 80
+      - name: djangotodo
+        image: sbm782/django-test:1.3
+        ports:
+        - containerPort: 80
+        
