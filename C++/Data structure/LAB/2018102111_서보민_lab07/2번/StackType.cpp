@@ -1,0 +1,122 @@
+// Implementation file for StackType.h
+#include <iostream>
+#include <cstddef>
+#include <new>
+#include "StackType.h"
+using namespace std;
+
+void StackType::Push(ItemType newItem)
+// Adds newItem to the top of the stack.
+// Pre:  Stack has been initialized.
+// Post: If stack is full, FullStack exception is thrown;
+//       else newItem is at the top of the stack.
+
+{
+  if (IsFull())
+    throw FullStack();
+  else
+  {
+    NodeType* location;
+    location = new NodeType;
+    location->info = newItem;
+    location->next = topPtr;
+    topPtr = location;
+  }
+}
+void StackType::Pop()
+// Removes top item from Stack and returns it in item.
+// Pre:  Stack has been initialized.
+// Post: If stack is empty, EmptyStack exception is thrown;
+//       else top element has been removed.
+{
+  if (IsEmpty())
+    throw EmptyStack();
+  else
+  {  
+    NodeType* tempPtr;
+    tempPtr = topPtr;
+    topPtr = topPtr->next;
+    delete tempPtr;
+  }
+}
+ItemType StackType::Top()
+// Returns a copy of the top item in the stack.
+// Pre:  Stack has been initialized.
+// Post: If stack is empty, EmptyStack exception is thrown;
+//       else a copy of the top element is returned.
+{
+  if (IsEmpty())
+    throw EmptyStack();
+  else
+    return topPtr->info;  
+}
+bool StackType::IsEmpty() const
+// Returns true if there are no elements on the stack; false otherwise.
+{
+    return (topPtr == NULL);
+}
+bool StackType::IsFull() const
+// Returns true if there is no room for another ItemType 
+//  on the free store; false otherwise.
+{
+  NodeType* location;
+  try
+  {
+    location = new NodeType;
+    delete location;
+    return false;
+  }
+  catch(std::bad_alloc)
+  {
+    return true;
+  }
+}
+
+StackType::~StackType()
+// Post: stack is empty; all items have been deallocated.
+{
+    NodeType* tempPtr;
+
+    while (topPtr != NULL)
+    {
+        tempPtr = topPtr;
+        topPtr = topPtr->next;
+        delete tempPtr;
+    }
+}
+
+StackType::StackType()	// Class constructor.
+{
+    topPtr = NULL;
+}
+
+void StackType::Copy(StackType& stack) {
+    NodeType* ptr1;
+    NodeType* ptr2;
+    if (stack.topPtr == NULL) topPtr = NULL;
+    else {
+        topPtr = new NodeType;
+        topPtr->info = stack.topPtr->info;
+        ptr1 = stack.topPtr->next;
+        ptr2 = topPtr;
+        while (ptr1 != NULL) {
+            ptr2->next = new NodeType;
+            ptr2 = ptr2->next;
+            ptr2->info = ptr1->info;
+            ptr1 = ptr1->next;
+        }
+        ptr2->next = NULL;
+    }
+}
+void StackType::Print() {
+    NodeType* tempptr = topPtr;
+    while (1) {
+        ItemType tmp_item = tempptr->info;
+        cout << tmp_item << " ";
+        if (tempptr->next == NULL) break;
+        else {
+            tempptr = tempptr->next;
+        }
+    }
+    cout << endl;
+}
