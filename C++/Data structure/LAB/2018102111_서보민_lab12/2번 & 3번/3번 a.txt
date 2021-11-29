@@ -1,0 +1,5 @@
+base case는 startVertex가 endVertex와 같아질 경우로 설정하여 찾고자 하는 곳까지
+함수가 호출되면 endVertex를 출력한 후 true를 반환합니다.
+
+general case는 endVertex에 해당하는 값을 찾지 못한 상태에서 인접노드가 없다면 false를 반환하고 있다면 다시 
+재귀적으로 함수를 호출함으로써 endVertex를 찾습니다
